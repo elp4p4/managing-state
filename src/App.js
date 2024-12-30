@@ -4,17 +4,15 @@ import TaskList from './components/TaskList';
 import "./App.css";
 
 function App() {
-  const [tasks, setTasks] = useState([]);
+  // Lazy initialization to load tasks directly from localStorage
+  const [tasks, setTasks] = useState(() => {
+    const storedTasks = localStorage.getItem('tasks');
+    return storedTasks ? JSON.parse(storedTasks) : [];
+  });
   const [taskToEdit, setTaskToEdit] = useState(null);
 
   useEffect(() => {
-    // Load tasks from localStorage
-    const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    setTasks(storedTasks);
-  }, []);
-
-  useEffect(() => {
-    // Save tasks to localStorage
+    // Save tasks to localStorage whenever tasks state changes
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
 
@@ -49,18 +47,23 @@ function App() {
 
   return (
     <div className="app">
-      <h1 style={{textAlign:"center", marginBottom:"90px"}}>My To-Do List</h1>
-      <div style={{backgroundColor:"rgb(255, 255, 255)", padding:"40px 20px", borderRadius:"10px", boxShadow:"20px 20px 20px 20px rgba(0,0,0,0.2)"}}>
-      <TaskForm
-        onSave={taskToEdit ? updateTask : addTask}
-        taskToEdit={taskToEdit}
-      />
-      <TaskList
-        tasks={tasks}
-        onComplete={toggleTaskCompletion}
-        onDelete={deleteTask}
-        onEdit={setTaskToEdit}
-      />
+      <h1 style={{ textAlign: "center", marginBottom: "90px" }}>My To-Do List</h1>
+      <div style={{
+        backgroundColor: "rgb(255, 255, 255)",
+        padding: "40px 20px",
+        borderRadius: "10px",
+        boxShadow: "20px 20px 20px 20px rgba(0,0,0,0.2)"
+      }}>
+        <TaskForm
+          onSave={taskToEdit ? updateTask : addTask}
+          taskToEdit={taskToEdit}
+        />
+        <TaskList
+          tasks={tasks}
+          onComplete={toggleTaskCompletion}
+          onDelete={deleteTask}
+          onEdit={setTaskToEdit}
+        />
       </div>
     </div>
   );
