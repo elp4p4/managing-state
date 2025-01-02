@@ -9,6 +9,7 @@ function TaskItem({ task, onComplete, onDelete, onEdit }) {
     <button style={{ backgroundColor: "rgb(0, 255, 42)" }} onClick={() => onComplete(task)}>
       {task.completed ? 'Undone' : 'Done'}
     </button>
+    <button style={{ backgroundColor: "rgb(255, 239, 21)" }} onClick={() => onEdit(task)}>Update</button>
     <button style={{ backgroundColor: "rgb(255, 21, 21)" }} onClick={() => onDelete(task)}>Delete</button>
   </div>
 </div>
